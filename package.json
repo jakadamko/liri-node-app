@@ -12,8 +12,8 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies":{
-    "node-spotify-api": "^1.06",
+  "dependencies": {
+    "node-spotify-api": "^1.0.7",
     "request": "^2.81.0",
     "twitter": "^1.7.0"
   }

@@ -1,13 +1,12 @@
 // Node module imports needed to run the functions
 
-var fs = require("fs"); //file sys used to read and write files
+var fs = require("fs"); //file sys 
 var request = require("request");
 var keys = require("./keys.js");
 var twitter = require("twitter");
 var spotify = require("spotify");
+var Spotify = require('node-spotify-api');
 var liriArgument = process.argv[2];
-
-
 
 
 // commands for this liri app
@@ -66,35 +65,35 @@ function myTweets() {
     });
 }
 
-
-
 // Spotify function, uses the Spotify module to call the Spotify api
 function spotifyThisSong(songName) {
+    var spotify = new Spotify({
+        id: '128d40c272774296bf479af406f23b35',
+        secret: '9714013db8f04d4b8f8b0efdddd87c79'
+    });
+
     var songName = process.argv[3];
     if (!songName) {
         songName = "What's my age again";
     }
     params = songName;
-    spotify.search({ type: 'track', query: params }, function(err, data) {
-        if (!err) {
-            var songInfo = data.tracks.items;
-            for (var i = 0; i < 5; i++) {
-                if (songInfo[i] != undefined) {
-                    var spotifyResults =
-                        "Artist: " + songInfo[i].artists[0].name + "\r\n" +
-                        "Song: " + songInfo[i].name + "\r\n" +
-                        "Album the song is from: " + songInfo[i].album.name + "\r\n" +
-                        "Preview Url: " + songInfo[i].preview_url + "\r\n" +
-                        "------------------------------ " + i + " ------------------------------" + "\r\n";
-                    console.log(spotifyResults);
-                    log(spotifyResults); // calling log function
-                }
+
+    spotify
+
+        .search({ type: 'track', query: params })
+        .then(function(data) {
+            for (var i = 0; i < 10; i++) {
+
+                console.log("Artist: " + data.tracks.items[i].artists[0].name);
+                console.log("Track: " + data.tracks.items[i].name);
+                console.log("Album: " + data.tracks.items[i].album.name);
+                console.log("Preview Song: " + data.tracks.items[i].preview_url);
+                console.log("------------------------------------");
             }
-        } else {
-            console.log("Error :" + err);
-            return;
-        }
-    });
+        })
+        .catch(function(err) {
+            console.error('Error occurred: ' + err);
+        });
 };
 
 
@@ -105,24 +104,22 @@ function movieThis() {
         movie = "mr nobody";
     }
     params = movie
-    request("http://www.omdbapi.com/?t=" + params + "&y=&plot=short&r=json&tomatoes=true", function(error, response, body) {
+    request("http://www.omdbapi.com/?t=" + params + "&y=&plot=short&r=json&tomatoes=true&apikey=40e9cece", function(error, response, body) {
+
+
         if (!error && response.statusCode == 200) {
             var movieObject = JSON.parse(body);
-            //console.log(movieObject); // Show the text in the terminal
-            var movieResults =
-                "------------------------------ begin ------------------------------" + "\r\n"
-            "Title: " + movieObject.Title + "\r\n" +
-                "Year: " + movieObject.Year + "\r\n" +
-                "Imdb Rating: " + movieObject.imdbRating + "\r\n" +
-                "Country: " + movieObject.Country + "\r\n" +
-                "Language: " + movieObject.Language + "\r\n" +
-                "Plot: " + movieObject.Plot + "\r\n" +
-                "Actors: " + movieObject.Actors + "\r\n" +
-                "Rotten Tomatoes Rating: " + movieObject.tomatoRating + "\r\n" +
-                "Rotten Tomatoes URL: " + movieObject.tomatoURL + "\r\n" +
-                "------------------------------ fin ------------------------------" + "\r\n";
-            console.log(movieResults);
-            log(movieResults); // calling log function
+
+
+            console.log("Title: " + movieObject.Title);
+            console.log("Year: " + movieObject.Year);
+            console.log("Imdb Rating: " + movieObject.imdbRating);
+            console.log("Country: " + movieObject.Country);
+            console.log("Language: " + movieObject.Language);
+            console.log("Plot: " + movieObject.Plot);
+            console.log("Actors: " + movieObject.Actors);
+            console.log("Rotten Tomatoes Rating: " + movieObject.tomatoRating);
+            console.log("Rotten Tomatoes URL: " + movieObject.tomatoURL);
         } else {
             console.log("Error :" + error);
             return;
