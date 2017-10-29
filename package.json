@@ -1,0 +1,20 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "liri-node-app",
+  "main": "keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakadamko/liri-node-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies":{
+    "node-spotify-api": "^1.06",
+    "request": "^2.81.0",
+    "twitter": "^1.7.0"
+  }
+}
